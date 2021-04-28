@@ -124,7 +124,12 @@ public class VKAuthModule extends ReactContextBaseJavaModule implements Activity
                 return;
             }
         }
-
+        
+        if (!VKUtil.isIntentAvailable(activity, VK_APP_AUTH_ACTION, null, VK_APP_PACKAGE_ID)) {
+            promise.reject(E_ACTIVITY_DOES_NOT_EXIST, "No VK App");
+            return;
+        }
+        
         Log.d(LOG, "Requesting scopes (" + scopeSize + ") " + Arrays.toString(scopeArray));
         loginPromise = promise;
         VKSdk.login(activity, scopeArray);
