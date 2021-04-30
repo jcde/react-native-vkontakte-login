@@ -124,11 +124,15 @@ public class VKAuthModule extends ReactContextBaseJavaModule implements Activity
                 return;
             }
         }
-        
-        if (!VKUtil.isIntentAvailable(activity, VK_APP_AUTH_ACTION, null, VK_APP_PACKAGE_ID)) {
-            promise.reject(E_ACTIVITY_DOES_NOT_EXIST, "No VK App");
+
+		// start
+		String VK_APP_PACKAGE_ID = "com.vkontakte.android";
+		String VK_APP_AUTH_ACTION = "com.vkontakte.android.action.SDK_AUTH";
+        if (!VKUtil.isIntentAvailable(activity, VK_APP_AUTH_ACTION)) { //, null, VK_APP_PACKAGE_ID)) {
+            promise.reject(E_ACTIVITY_DOES_NOT_EXIST, "No VK App, WebView ignored");
             return;
         }
+		// start ended
         
         Log.d(LOG, "Requesting scopes (" + scopeSize + ") " + Arrays.toString(scopeArray));
         loginPromise = promise;
