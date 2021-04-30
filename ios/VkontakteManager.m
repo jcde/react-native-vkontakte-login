@@ -79,9 +79,13 @@ RCT_EXPORT_METHOD(login: (NSArray *) scope resolver: (RCTPromiseResolveBlock) re
         self->loginResolver(loginData);
         break;
       }
-      case VKAuthorizationInitialized: {
-        DMLog(@"Authorization required");
-        [VKSdk authorize:scope];
+	    case VKAuthorizationInitialized: {
+        NSString *VK_AUTHORIZE_URL_STRING = @"vkauthorize://authorize";
+		    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:VK_AUTHORIZE_URL_STRING]]) {
+          DMLog(@"Authorization required");
+          [VKSdk authorize:scope];
+		    } else
+          reject(E_VK_CANCELED, @"No VK App, WebView ignored", nil);
         break;
       }
       case VKAuthorizationError: {
